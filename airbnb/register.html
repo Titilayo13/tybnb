@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="register.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<style>
+    
+</style>
+<body>
+    <section id="sectionn">
+        <div class="formBox">
+            <form class="row mt-5">
+                <h2>Sign up</h2>
+                <div class="input-group mt-4">
+                    <label for="name">Enter your name</label>
+                    <input type="text" id="userName" >
+                    <label for="name">Enter your email</label>
+                    <input type="email" id="email">
+                    <label for="name">Enter your password</label>
+                    <input type="password" id="password">
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="checkbox" name="" id="inpCheck">
+                        <span style="font-size: 12px;">I have read and agreed to the terms and conditions of Tyhome</span>
+                    </div>
+                    <div>
+                        <!-- <button type="button" onclick="changes()">Sign in</button> -->
+                        <button  type='submit'id="signIn">Sign up</button>
+                        <p style="font-size: 12px; margin-top: 20px;">Already have an account? <a href="./login.html">login</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+</body>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc ,setDoc,doc } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyBC4JCJ1OC6soZugmKEtWnLm3bR4sOGibw",
+  authDomain: "login-with-firebase-e7724.firebaseapp.com",
+  databaseURL: "https://login-with-firebase-e7724-default-rtdb.firebaseio.com",
+  projectId: "login-with-firebase-e7724",
+  storageBucket: "login-with-firebase-e7724.appspot.com",
+  messagingSenderId: "806507469717",
+  appId: "1:806507469717:web:7a7d94ff1a22643964349c"
+};
+
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const firestore = getFirestore(app);
+
+    const signInButton = document.getElementById('signIn');
+    signInButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        const email = document.getElementById('email').value;
+        const userName = document.getElementById('userName').value;
+        const password = document.getElementById('password').value;
+        const user_data = {
+                    email: email,
+                    userName: userName,
+                    last_login: Date.now()
+                };
+        
+        
+        
+
+        if (!validateEmail(email) || !validatePassword(password) || !validateName(userName)) {
+            alert('enter valid credentials')
+            return;
+        }
+        
+        createUserWithEmailAndPassword(auth,userName, email, password)
+            .then(( userData) => {
+                const user = userData.user
+                if (user) {
+                    alert('user sign')
+                setDoc(
+                    doc(firestore, 'users', user.uid),user_data,{merge : true}
+                ).then(res =>{
+                    alert('stored')
+                    window.location = './login.html'
+                }).catch(error =>{
+                alert(error.message)
+                })
+                }
+               
+
+                
+                   
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    });
+
+    function validateName(userName) {
+        const nameRegex = /^[A-Za-z\s'-]{4,15}$/;
+       let isValidName = nameRegex.test(userName);
+        if (isValidName) {
+    return true
+} else {
+    userName.style.border = "2px solid red";
+return false
+}
+    }
+    function validateEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const isValidEmail= emailRegex.test(email);
+        if (isValidEmail) {
+    return true
+} else {
+    return false
+}
+
+}
+
+    function validatePassword(password) {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()\-_=+{};:,<.>]{6,}$/;
+        const isValidPassword= passwordRegex.test(password);
+        if (isValidPassword) {
+    return true
+} else {
+alert('password must be minimum of 6letters with at least 1 number')
+    return false
+}
+
+    }
+
+
+</script>
+</html>

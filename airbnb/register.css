@@ -1,0 +1,37 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#sectionn{
+    background-color: black;
+    height: 100vh;
+}
+.formBox{
+    display: flex;
+    justify-content: center;
+}
+form{
+    width: 30%;
+    color: white;
+    background: linear-gradient(to bottom, #7E1805 20%, black 50%, #7E1805 80%);
+        border-radius: 10px;
+        padding: 40px 0;
+        border: 2px solid red;
+}
+input{
+    height: 50px;
+    width: 100%;
+    /* border-radius: 10px !important; */
+    border: 0;
+    outline: 0;
+     margin: 15px 0 !important ; 
+}
+#inpCheck{
+    /* font-size: 14px; */
+    width: 15px;
+}
+button{
+    padding: 10px 30px;
+    border: 0;
+    border-radius: 30px !important ;
+}

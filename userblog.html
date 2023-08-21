@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+   
+
+    <div id="dispay"></div>
+
+   
+   <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js'
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDaKcwaj3r1QbeUjv9-5YsSTryudlZbx-o",
+    authDomain: "fir-learn-10aa5.firebaseapp.com",
+    projectId: "fir-learn-10aa5",
+    storageBucket: "fir-learn-10aa5.appspot.com",
+    messagingSenderId: "598224841498",
+    appId: "1:598224841498:web:52ded3a7f86c0ccb895aa3"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+
+  const db = getFirestore()
+
+  const colRef = collection(db, 'Blog')
+  
+
+  async function getAllBlogFromDb(){
+    let blog = []
+   try {
+    const {docs} = await getDocs(colRef)
+    docs.forEach((doc)=>{
+        let id = doc.id
+        blog.push({...doc.data(), id})
+    })
+    showBlog(blog)
+   } catch (error) {
+    console.log(error);
+   }
+    
+  }
+
+  getAllBlogFromDb()
+
+
+  function showBlog(blog){
+    dispay.innerHTML = ''
+    blog.forEach((elem)=>{
+        dispay.innerHTML+= `
+        <div>
+            <h1>${elem.title}</h1>
+              <p>${elem.author}</p>
+              <p>${elem.body}</p>
+              <p>${elem.year}</p>
+    </div>
+        `
+    })
+  }
+
+//   create blog
+
+
+
+
+
+
+</script>
+</body>
+</html>
+

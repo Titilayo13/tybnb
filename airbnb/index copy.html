@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" id="formData" >
+        <div>
+            <label for="">Title</label>
+            <input type="text" name="title">
+        </div>
+        <div>
+            <label for="">Author</label>
+            <input type="text" name="author">
+        </div>
+        <div>
+            <label for="">Author</label>
+            <textarea name="body" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <label for="">Year</label>
+            <input type="number" name="year">
+        </div>
+        <button>Submit</button>
+    </form>
+
+    <script type="module">
+
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { getFirestore, collection, getDocs} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-fire.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGwCTJx4mkyqoHdwFq3A2K1awAeDwlqCg",
+  authDomain: "fir-learn54.firebaseapp.com",
+  projectId: "fir-learn54",
+  storageBucket: "fir-learn54.appspot.com",
+  messagingSenderId: "637544066224",
+  appId: "1:637544066224:web:11aa4ac88a9cfb4d279f75"
+};
+
+  const app = initializeApp(firebaseConfig);
+
+
+  const db = getFirestore()
+  const colRef = collection(db, 'Blog')
+
+
+  
+  formData.addEventListener('submit',async(e)=>{
+    e.preventDefault()
+    let title = formData.title.value
+    let author = formData.author.value
+    let body = formData.body.value
+    let year = formData.year.value
+
+    try {
+        const res = await addDoc(colRef, {title,author,body,year, publish: false})
+        console.log('úpload success', res);
+       
+    } catch (error) {
+        console.log(error);
+    }
+
+
+    console.log(title, author, body, year);
+  })
+  
+
+
+
+
+
+    </script>
+</body>
+</html>
